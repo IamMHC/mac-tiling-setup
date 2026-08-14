@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# JankyBorders — Hyprland-style active window highlight
+# Palette matches sketchybar (tokyonight)
+
+options=(
+    style=round
+    width=5.0
+    hidpi=on
+    active_color="gradient(top_left=0xff7aa2f7,bottom_right=0xffbb9af7)"
+    inactive_color=0xff3b4261
+    background_color=0x00000000
+)
+
+borders "${options[@]}"

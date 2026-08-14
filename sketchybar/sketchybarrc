@@ -1,0 +1,108 @@
+#!/bin/bash
+# Top bar for AeroSpace
+
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+# Absolute path: click_script and plugins run with a minimal PATH
+SB=__BREW__/bin/sketchybar
+
+# Family name as registered, not the cask name. Check with:
+#   system_profiler SPFontsDataType | grep -i jetbrains
+FONT="__FONT__"
+BG=0xff1a1b26
+FG=0xffc0caf5
+DIM=0xff7f88ad
+ACCENT=0xff7aa2f7
+LINE=0xff3b4261
+
+sketchybar --bar \
+    height=32 \
+    blur_radius=30 \
+    position=top \
+    sticky=on \
+    padding_left=10 \
+    padding_right=10 \
+    color=$BG \
+    corner_radius=0 \
+    y_offset=0 \
+    margin=0 \
+    topmost=window
+
+sketchybar --default \
+    icon.font="$FONT:Bold:14.0" \
+    icon.color=$FG \
+    label.font="$FONT:Bold:13.0" \
+    label.color=$FG \
+    padding_left=4 \
+    padding_right=4 \
+    label.padding_left=4 \
+    label.padding_right=4 \
+    icon.padding_left=4 \
+    icon.padding_right=4
+
+##### Workspaces (left) #####
+sketchybar --add event aerospace_workspace_change
+
+for sid in 1 2 3 4 5 6 7 8 9; do
+    sketchybar --add item space.$sid left \
+        --subscribe space.$sid aerospace_workspace_change \
+        --set space.$sid \
+        background.color=$ACCENT \
+        background.corner_radius=5 \
+        background.height=22 \
+        background.drawing=off \
+        label="$sid" \
+        label.color=$DIM \
+        click_script="__BREW__/bin/aerospace workspace $sid" \
+        script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+##### Front app (center-left) #####
+sketchybar --add item front_app left \
+    --set front_app \
+    icon.drawing=off \
+    label.color=$ACCENT \
+    script="$PLUGIN_DIR/front_app.sh" \
+    --subscribe front_app front_app_switched
+
+##### Right side #####
+# Click for the calendar popup.
+sketchybar --add item clock right \
+    --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
+    click_script="$PLUGIN_DIR/clock_click.sh" \
+    popup.background.color=0x00000000 \
+    popup.background.border_width=0 \
+    popup.background.border_color=$LINE \
+    popup.background.corner_radius=8 \
+    popup.align=right \
+    popup.y_offset=6 \
+    popup.horizontal=off
+
+# Labels are single-line, so the day grid and agenda are drawn as an image.
+sketchybar --add item calcard popup.clock \
+    --set calcard \
+    label.drawing=off \
+    icon.drawing=off \
+    background.image.scale=0.5 \
+    background.drawing=on \
+    background.color=0x00000000 \
+    background.padding_left=0 \
+    background.padding_right=0
+
+# Next meeting; hidden when the day is clear
+sketchybar --add item meeting right \
+    --set meeting update_freq=60 script="$PLUGIN_DIR/meeting.sh" \
+    label.color=$FG icon.color=$ACCENT drawing=off
+
+# Dismiss the popup when the pointer leaves the bar
+sketchybar --add event mouse_exited_global
+sketchybar --subscribe clock mouse.exited.global
+
+sketchybar --add item battery right \
+    --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+    --subscribe battery power_source_change
+
+sketchybar --add item volume right \
+    --set volume script="$PLUGIN_DIR/volume.sh" \
+    --subscribe volume volume_change
+
+sketchybar --update

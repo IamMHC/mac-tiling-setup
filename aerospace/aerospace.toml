@@ -1,0 +1,177 @@
+# AeroSpace config. Modifier is alt.
+
+config-version = 2
+
+after-startup-command = [
+    'exec-and-forget sketchybar',
+    'exec-and-forget __BREW__/bin/borders',
+]
+
+# keep the bar's workspace indicator in sync
+exec-on-workspace-change = [
+    '/bin/bash', '-c',
+    '__BREW__/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+start-at-login = true
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# tiles, auto-oriented by aspect ratio
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# mouse follows focus
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+automatically-unhide-macos-hidden-apps = false
+
+# keep all 9 alive when empty so the bar always shows them
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+# 1-5 on the external, 6-9 on the laptop.
+# The secondary/main fallbacks keep these working when the external is gone.
+[workspace-to-monitor-force-assignment]
+1 = ['__EXTERNAL__', 'secondary', 'main']
+2 = ['__EXTERNAL__', 'secondary', 'main']
+3 = ['__EXTERNAL__', 'secondary', 'main']
+4 = ['__EXTERNAL__', 'secondary', 'main']
+5 = ['__EXTERNAL__', 'secondary', 'main']
+6 = ['Built-in Retina Display', 'main']
+7 = ['Built-in Retina Display', 'main']
+8 = ['Built-in Retina Display', 'main']
+9 = ['Built-in Retina Display', 'main']
+
+[key-mapping]
+preset = 'qwerty'
+
+# top clears the bar
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.bottom     = 8
+outer.top        = 48   # 32 sketchybar + 16 breathing room (menu bar hidden)
+outer.right      = 8
+
+[mode.main.binding]
+
+# --- Launchers -------------------------------------------------------------
+alt-enter = 'exec-and-forget open -na Ghostty'
+alt-b     = 'exec-and-forget open -a "Brave Browser"'
+alt-f     = 'exec-and-forget open -a Finder'
+alt-e     = 'exec-and-forget open -a Zed'
+alt-s     = 'exec-and-forget open -a Slack'
+alt-space = 'exec-and-forget open -g raycast://'
+
+# --- Window ----------------------------------------------------------------
+alt-w       = 'close'
+alt-shift-q = 'close'
+alt-shift-w = 'close-all-windows-but-current'
+alt-v       = 'layout floating tiling'   # toggle float
+alt-t       = 'layout tiles horizontal vertical'
+alt-shift-t = 'layout accordion horizontal vertical'
+alt-shift-f = 'exec-and-forget __HOME__/.config/aerospace/fullscreen.sh'
+alt-shift-space = 'layout floating tiling'
+
+# --- Focus (vim keys + arrows) --------------------------------------------
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+alt-left  = 'focus left'
+alt-down  = 'focus down'
+alt-up    = 'focus up'
+alt-right = 'focus right'
+
+# --- Move window -----------------------------------------------------------
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+alt-shift-left  = 'move left'
+alt-shift-down  = 'move down'
+alt-shift-up    = 'move up'
+alt-shift-right = 'move right'
+
+# --- Resize ----------------------------------------------------------------
+alt-minus  = 'resize smart -50'
+alt-equal  = 'resize smart +50'
+alt-shift-0 = 'balance-sizes'
+
+# --- Workspaces ------------------------------------------------------------
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+alt-shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
+alt-shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
+alt-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
+alt-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
+alt-shift-5 = 'move-node-to-workspace 5 --focus-follows-window'
+alt-shift-6 = 'move-node-to-workspace 6 --focus-follows-window'
+alt-shift-7 = 'move-node-to-workspace 7 --focus-follows-window'
+alt-shift-8 = 'move-node-to-workspace 8 --focus-follows-window'
+alt-shift-9 = 'move-node-to-workspace 9 --focus-follows-window'
+
+alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# --- Monitors --------------------------------------------------------------
+# focus other display
+alt-ctrl-h = 'focus-monitor --wrap-around prev'
+alt-ctrl-l = 'focus-monitor --wrap-around next'
+alt-ctrl-left  = 'focus-monitor --wrap-around prev'
+alt-ctrl-right = 'focus-monitor --wrap-around next'
+
+# send window to other display
+alt-ctrl-shift-h = ['move-node-to-monitor --wrap-around prev', 'focus-monitor --wrap-around prev']
+alt-ctrl-shift-l = ['move-node-to-monitor --wrap-around next', 'focus-monitor --wrap-around next']
+
+# --- Modes -----------------------------------------------------------------
+alt-shift-semicolon = 'mode service'
+alt-r = 'mode resize'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+h = ['join-with left', 'mode main']
+j = ['join-with down', 'mode main']
+k = ['join-with up', 'mode main']
+l = ['join-with right', 'mode main']
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+b = ['balance-sizes', 'mode main']
+enter = 'mode main'
+esc = 'mode main'
+
+# --- Window rules ----------------------------------------------------------
+# never tile these
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+if.window-title-regex-substring = 'Info'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
