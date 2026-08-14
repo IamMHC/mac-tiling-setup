@@ -54,6 +54,16 @@ The two display settings need a logout.
 ⌥W             close window              ⌥tab          last workspace
 ```
 
+## Status bar
+
+Click the clock for a calendar, click the volume item for a slider.
+
+```
+volume: click      slider popup, drag to set
+        scroll     nudge by 5
+        shift-click / right-click   mute
+```
+
 ## What it installs
 
 | Tool | Role |

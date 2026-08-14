@@ -101,8 +101,29 @@ sketchybar --add item battery right \
     --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
     --subscribe battery power_source_change
 
+# Click for a slider, scroll to nudge, shift-click or right-click to mute.
 sketchybar --add item volume right \
     --set volume script="$PLUGIN_DIR/volume.sh" \
-    --subscribe volume volume_change
+    click_script="$PLUGIN_DIR/volume_click.sh" \
+    popup.background.color=$BG \
+    popup.background.border_width=1 \
+    popup.background.border_color=$LINE \
+    popup.background.corner_radius=8 \
+    popup.align=right \
+    popup.y_offset=6 \
+    --subscribe volume volume_change mouse.scrolled
+
+sketchybar --add slider volume_slider popup.volume 120 \
+    --set volume_slider \
+        slider.highlight_color=$ACCENT \
+        slider.background.height=5 \
+        slider.background.corner_radius=3 \
+        slider.background.color=$LINE \
+        slider.knob="󰝥" \
+        slider.knob.font="$FONT:Bold:12.0" \
+        slider.knob.drawing=on \
+        script="$PLUGIN_DIR/volume_slider.sh" \
+        padding_left=10 padding_right=10 \
+    --subscribe volume_slider mouse.clicked
 
 sketchybar --update
